@@ -20,4 +20,19 @@ export class UserController {
 
     res.json(user);
   }
+
+  static async resetPassword(req: Request, res: Response) {
+    const { email, oldPassword, newPassword } = req.body;
+
+    const result = await UserService.resetPassword(
+      email,
+      oldPassword,
+      newPassword
+    );
+
+    res.json({
+      message: "Password updated successfully",
+      user: result,
+    });
+  }
 }

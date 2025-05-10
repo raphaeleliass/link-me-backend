@@ -1,6 +1,5 @@
 import { prisma } from "../../config/prisma.config";
 import { UserTypes } from "./user.types";
-
 export class UserRepository {
   static async createUser({
     username,
@@ -23,5 +22,13 @@ export class UserRepository {
 
   static async findUsernameInUse(username: string) {
     return await prisma.user.findUnique({ where: { username } });
+  }
+
+  static async updatePassword(email: string, newPassword: string) {
+    return await prisma.user.update({
+      where: { email },
+      data: { password: newPassword },
+      select: { id: true, email: true, updated_at: true },
+    });
   }
 }

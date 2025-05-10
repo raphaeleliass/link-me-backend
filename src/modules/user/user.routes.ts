@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { UserController } from "./user.controller";
 import { validadeMiddleware } from "../../middlewares/validate.middleware";
-import { userSchema } from "./user.schema";
+import { userSchema, resetPasswordSchema } from "./user.schema";
 import { authMiddleware } from "../../middlewares/auth.middleware";
 
 export const userRouter = Router();
@@ -101,4 +101,50 @@ userRouter.post(
   "/session",
   validadeMiddleware(userSchema),
   UserController.authUser
+);
+
+/**
+ * @swagger
+ * /api/users/reset-password:
+ *   post:
+ *     summary: Reset user password
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - oldPassword
+ *               - newPassword
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               oldPassword:
+ *                 type: string
+ *                 format: password
+ *               newPassword:
+ *                 type: string
+ *                 format: password
+ *                 minLength: 8
+ *     responses:
+ *       200:
+ *         description: Password reset successful
+ *       401:
+ *         description: Invalid credentials
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+userRouter.post(
+  "/reset-password",
+  authMiddleware,
+  validadeMiddleware(resetPasswordSchema),
+  UserController.resetPassword
 );

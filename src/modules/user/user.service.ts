@@ -62,4 +62,29 @@ export class UserService {
       token,
     };
   }
+
+  static async resetPassword(
+    email: string,
+    oldPassword: string,
+    newPassword: string
+  ) {
+    const user = await UserRepository.findEmailInUse(email);
+
+    if (!user) {
+      const error: any = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    const passwordMatcher = await compare(oldPassword, user.password);
+    if (!passwordMatcher) {
+      const error: any = new Error("Invalid password");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const passwordHash = await hash(newPassword, 8);
+
+    return await UserRepository.updatePassword(email, passwordHash);
+  }
 }
