@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.linkRouter = void 0;
+const express_1 = require("express");
+const auth_middleware_1 = require("../../middlewares/auth.middleware");
+const validate_middleware_1 = require("../../middlewares/validate.middleware");
+const link_schema_1 = require("./link.schema");
+const link_controller_1 = require("./link.controller");
+exports.linkRouter = (0, express_1.Router)();
+exports.linkRouter.post("/create", auth_middleware_1.authMiddleware, (0, validate_middleware_1.validadeMiddleware)(link_schema_1.linkSchema), link_controller_1.LinkController.createLink);
+exports.linkRouter.get("/all", auth_middleware_1.authMiddleware, link_controller_1.LinkController.allLinks);
+exports.linkRouter.put("/edit", auth_middleware_1.authMiddleware, (0, validate_middleware_1.validadeMiddleware)(link_schema_1.linkSchema), link_controller_1.LinkController.editLink);
+exports.linkRouter.delete("/delete", auth_middleware_1.authMiddleware, link_controller_1.LinkController.deleteLink);
