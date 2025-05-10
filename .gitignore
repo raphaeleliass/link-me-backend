@@ -1,3 +1,30 @@
-node_modules
-# Keep environment variables out of version control
+# Node
+node_modules/
+dist/
 .env
+.env.* # pra pegar .env.development, .env.local, etc.
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Prisma
+prisma/migrations/
+prisma/dev.db
+
+# Vercel
+.vercel/
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# Outros
+coverage/
+.DS_Store
