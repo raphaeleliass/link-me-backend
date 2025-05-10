@@ -4,6 +4,7 @@ import rateLimit from "express-rate-limit";
 import { userRouter } from "./modules/user/user.routes";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { linkRouter } from "./modules/link/link.routes";
+import { specs, swaggerUi } from "./swagger";
 
 export const app = express();
 
@@ -18,6 +19,13 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(express.json());
+
+// Swagger Documentation
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 
 app.use("/api/users", userRouter);
 app.use("/api/links", linkRouter);
