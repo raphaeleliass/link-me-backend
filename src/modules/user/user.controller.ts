@@ -3,7 +3,7 @@ import { UserService } from "./user.service";
 
 export class UserController {
   static async createUser(req: Request, res: Response) {
-    const { username, email, password, name } = req.body;
+    const { username, email, password } = req.body;
 
     const user = await UserService.createUser({
       username,
