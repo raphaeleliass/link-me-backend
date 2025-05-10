@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 
-interface AuthenticatedRequest extends Request {
-  userId: string;
+interface Payload {
+  sub: string;
 }
 
 export const authMiddleware = (
@@ -22,9 +22,9 @@ export const authMiddleware = (
   if (!process.env.JWT_SECRET)
     throw new Error("Missing JWT_SECRET environment variable");
 
-  const { sub } = verify(token, process.env.JWT_SECRET) as { sub: string };
+  const { sub } = verify(token, process.env.JWT_SECRET) as Payload;
 
-  (req as AuthenticatedRequest).userId = sub;
+  req.userId = sub;
 
   next();
 };
