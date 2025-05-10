@@ -12,7 +12,8 @@ export class LinkRepository {
   static async editLink(id: string, title: string, link: string) {
     return await prisma.link.update({
       data: { link, title },
-      where: { id: id, link, title },
+      where: { id },
+      select: { id: true, title: true, link: true, updated_at: true },
     });
   }
 
@@ -25,6 +26,10 @@ export class LinkRepository {
 
   static async findLink(link: string) {
     return await prisma.link.findFirst({ where: { link } });
+  }
+
+  static async findLinkById(id: string) {
+    return await prisma.link.findUnique({ where: { id } });
   }
 
   static async listAllLinks({ userId }: LinkTypes) {

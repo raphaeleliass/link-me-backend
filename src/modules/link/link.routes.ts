@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../../middlewares/auth.middleware";
 import { validadeMiddleware } from "../../middlewares/validate.middleware";
-import { linkSchema } from "./link.schema";
+import { editLinkSchema, linkSchema } from "./link.schema";
 import { LinkController } from "./link.controller";
 
 export const linkRouter = Router();
@@ -98,7 +98,23 @@ linkRouter.get("/all", authMiddleware, LinkController.allLinks);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Link'
+ *             type: object
+ *             required:
+ *               - id
+ *               - title
+ *               - link
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: ID of the link to edit
+ *               title:
+ *                 type: string
+ *                 minLength: 2
+ *                 description: New title of the link
+ *               link:
+ *                 type: string
+ *                 format: uri
+ *                 description: New URL to be linked
  *     responses:
  *       200:
  *         description: Link updated successfully
@@ -114,7 +130,7 @@ linkRouter.get("/all", authMiddleware, LinkController.allLinks);
 linkRouter.put(
   "/edit",
   authMiddleware,
-  validadeMiddleware(linkSchema),
+  validadeMiddleware(editLinkSchema),
   LinkController.editLink
 );
 

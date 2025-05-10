@@ -11,6 +11,14 @@ export class LinkService {
   }
 
   static async editLink(id: string, title: string, link: string) {
+    const linkExists = await LinkRepository.findLinkById(id);
+
+    if (!linkExists) {
+      const error: any = new Error("Link not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
     return await LinkRepository.editLink(id, title, link);
   }
 
